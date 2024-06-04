@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Fuel Cost Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+    <script>
+        function calculateTotals() {
+            let totalCost = 0;
+            let totalConsumption = 0;
+            let days = 30; // Assume 30 days in a month for simplicity
+
+            for (let i = 1; i <= days; i++) {
+                let cost = parseFloat(document.getElementById('cost' + i).value) || 0;
+                let consumption = parseFloat(document.getElementById('consumption' + i).value) || 0;
+                totalCost += cost;
+                totalConsumption += consumption;
+            }
+
+            let averageConsumption = totalConsumption / days;
+            document.getElementById('totalCost').innerText = totalCost.toFixed(2);
+            document.getElementById('averageConsumption').innerText = averageConsumption.toFixed(2);
+
+            let previousMonthCost = parseFloat(document.getElementById('previousMonthCost').value) || 0;
+            let costDifference = totalCost - previousMonthCost;
+            let costTrend = costDifference > 0 ? 'increased' : 'decreased';
+            document.getElementById('costTrend').innerText = costTrend;
+        }
+    </script>
+</head>
+<body>
+    <h1>Fuel Cost Calculator</h1>
+    <table>
+        <tr>
+            <th>Day</th>
+            <th>Fuel Cost</th>
+            <th>Fuel Consumption</th>
+        </tr>
+        <!-- Generate rows for each day of the month -->
+        <script>
+            for (let i = 1; i <= 30; i++) {
+                document.write('<tr>');
+                document.write('<td>' + i + '</td>');
+                document.write('<td><input type="number" id="cost' + i + '" step="0.01"></td>');
+                document.write('<td><input type="number" id="consumption' + i + '" step="0.01"></td>');
+                document.write('</tr>');
+            }
+        </script>
+    </table>
+    <br>
+    <label for="previousMonthCost">Previous Month Total Cost: </label>
+    <input type="number" id="previousMonthCost" step="0.01">
+    <br><br>
+    <button onclick="calculateTotals()">Calculate Totals</button>
+    <h2>Results</h2>
+    <p>Total Cost for the Month: $<span id="totalCost">0.00</span></p>
+    <p>Average Fuel Consumption per Day: <span id="averageConsumption">0.00</span> liters</p>
+    <p>The cost has <span id="costTrend">neither increased nor decreased</span> compared to the previous month.</p>
+</body>
+</html>
